@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS funcionarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL,
+    endereco VARCHAR(50) NOT NULL,
+    idade INT NOT NULL,
+    dataNasc DATETIME NOT NULL,
+    nivel int NOT NULL,
+    Foto VARCHAR(30) NOT NULL DEFAULT ''
+);
