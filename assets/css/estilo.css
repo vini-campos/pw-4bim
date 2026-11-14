@@ -31,7 +31,6 @@ main.container { flex: 1; }
     background: var(--blue);
     font-size: .9rem;
 }
-.app-footer { padding: 22px 0; color: var(--muted); background: #fff; border-top: 1px solid var(--line); font-size: .82rem; }
 .page-heading, .section-heading {
     display: flex;
     justify-content: space-between;
