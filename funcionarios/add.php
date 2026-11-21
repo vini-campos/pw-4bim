@@ -6,7 +6,6 @@ include HEADER_TEMPLATE;
 
 <header class="page-heading">
     <div>
-        <p class="eyebrow">Equipe</p>
         <h2>Novo funcionário</h2>
         <p class="page-description">Preencha as informações para adicionar alguém à equipe.</p>
     </div>
@@ -45,7 +44,7 @@ include HEADER_TEMPLATE;
 
     <div id="actions" class="row">
         <div class="col-md-12">
-            <button type="submit" class="btn btn-primary mb-2"><i class="fa-solid fa-floppy-disk"></i> Salvar funcionário</button>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Salvar funcionário</button>
             <a href="index.php" class="btn btn-light"><i class="fa-solid fa-arrow-left"></i> Cancelar</a>
         </div>
     </div>

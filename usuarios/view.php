@@ -7,27 +7,31 @@ $foto = foto_usuario_url($usuario['Foto_usu'] ?? null);
 $perfil = nomePerfilUsuario($usuario['Nivel_usu']);
 ?>
 
-<h2>Usuário #<?php echo (int) $usuario['Id_Usu']; ?></h2>
-<hr>
+<header class="page-heading">
+    <div>
+        <h2><?php echo h($usuario['Login_usu']); ?></h2>
+        <p class="page-description">Usuário #<?php echo (int) $usuario['Id_Usu']; ?></p>
+    </div>
+</header>
 
 <?php exibir_mensagem(); ?>
 
 <div class="detail-panel">
     <div class="detail-grid">
         <div class="detail-item">
-            <span class="detail-label">Usuário:</span>
+            <span class="detail-label">Usuário</span>
             <span class="detail-value"><?php echo h($usuario['Login_usu']); ?></span>
         </div>
         <div class="detail-item">
-            <span class="detail-label">Perfil:</span>
+            <span class="detail-label">Perfil</span>
             <span class="detail-value"><?php echo h($perfil); ?></span>
         </div>
         <div class="detail-item">
-            <span class="detail-label">Status:</span>
+            <span class="detail-label">Status</span>
             <span class="detail-value"><?php echo $usuario['Ativo_usu'] ? 'Ativo' : 'Inativo'; ?></span>
         </div>
         <div class="detail-item">
-            <span class="detail-label">Foto:</span>
+            <span class="detail-label">Foto</span>
             <span class="detail-value">
                 <?php if ($foto): ?>
                     <img src="<?php echo h($foto); ?>" alt="Foto de <?php echo h($usuario['Login_usu']); ?>"

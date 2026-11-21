@@ -16,11 +16,8 @@ http_response_code(403);
 include HEADER_TEMPLATE;
 ?>
 
-<section class="text-center py-4">
-    <span class="welcome-icon mx-auto mb-4" aria-hidden="true">
-        <i class="fa-solid fa-lock"></i>
-    </span>
-    <p class="eyebrow">Erro 403</p>
+<section class="estado-vazio">
+    <span class="icone-grande" aria-hidden="true"><i class="fa-solid fa-lock"></i></span>
     <h1>Acesso não autorizado</h1>
     <p class="page-description mb-4">
         Seu perfil não tem o nível necessário para acessar esta página.

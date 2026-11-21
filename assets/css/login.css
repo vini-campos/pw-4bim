@@ -1,166 +1,47 @@
-:root {
-    --ink: #1d302d;
-    --muted: #65736f;
-    --navy: #183e35;
-    --blue: #327b68;
-    --line: #e0e9e4;
-    --surface: #fff;
-    --page: #f4f7f5;
+/* Telas de acesso (login e cadastro). Usa os tokens do style.css */
 
-    --blue-dark: #183e35;
-    --blue-light: #91c2a0;
-    --blue-glow: rgba(83, 145, 105, 0.2);
-
-    --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-body.login-page {
+body.auth-body {
     margin: 0;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 24px 16px;
-    font-family: var(--font-body);
-    font-size: 15px;
-    color: var(--ink);
-    background: linear-gradient(135deg, #142f29 0%, var(--navy) 60%, #327b68 100%);
-    -webkit-font-smoothing: antialiased;
+    background: linear-gradient(135deg, #0F1838 0%, var(--navy) 55%, var(--ultra-deep) 100%);
 }
 
-.login-box {
-    width: 100%;
-    max-width: 400px;
-}
+.auth { width: 100%; max-width: 420px; }
 
-.login-brand {
-    text-align: center;
-    margin-bottom: 20px;
-    font-family: var(--font-display);
-    font-size: 1.8rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--surface);
-}
+.auth-brand { display: flex; align-items: center; justify-content: center; gap: 0.6rem; margin-bottom: 1.25rem; color: #fff; }
+.auth-brand i { font-size: 1.6rem; }
+.auth-brand .nome { font-family: var(--fonte-titulo); font-weight: 800; font-size: 1.7rem; letter-spacing: -0.02em; }
 
-.login-brand i {
-    color: var(--blue-light);
-    margin-right: 8px;
-}
-
-.login-brand .login-tag {
-    color: var(--blue-light);
-}
-
-.login-card {
-    background: var(--surface);
-    border-radius: 16px;
-    border-top: 5px solid var(--blue);
-    padding: 32px 28px 24px;
+.auth-card {
+    padding: 2rem 1.75rem 1.5rem;
+    background: #fff;
+    border-top: 4px solid var(--ultra);
+    border-radius: 12px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
 }
-
-.login-card h1 {
-    margin: 0 0 4px;
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: var(--navy);
-}
-
-.login-sub {
-    margin: 0 0 22px;
-    font-size: 0.9rem;
-    color: var(--muted);
-}
-
-.login-card .form-label {
-    font-weight: 600;
-    font-size: 0.85rem;
-    color: var(--ink);
-}
-
-.login-card .form-control {
-    border-radius: 10px;
-    border: 1px solid var(--line);
-    color: var(--ink);
-    padding: 10px 12px;
-}
-
-.login-card .form-control:focus {
-    border-color: var(--blue);
-    box-shadow: 0 0 0 3px var(--blue-glow);
-}
-
-.login-hint {
-    display: block;
-    margin-top: 6px;
-    color: var(--muted);
-    font-size: 0.75rem;
-}
+.auth-card h1 { margin: 0 0 0.3rem; font-size: 1.7rem; }
+.auth-sub { margin: 0 0 1.5rem; color: var(--suave); }
+.auth-card .alert { margin-bottom: 1.25rem; }
 
 .btn-login {
     width: 100%;
-    padding: 11px;
-    border: 0;
-    border-radius: 10px;
-    background: var(--blue);
-    color: var(--surface);
-    font-family: var(--font-display);
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    transition: background 0.15s;
+    min-height: 48px;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--ultra);
+    border-radius: var(--raio-campo);
+    background: var(--ultra);
+    color: #fff;
+    font-family: var(--fonte-texto);
+    font-size: 1.05rem;
+    font-weight: 700;
 }
+.btn-login:hover { background: var(--ultra-deep); border-color: var(--ultra-deep); color: #fff; }
 
-.btn-login:hover {
-    background: var(--blue-dark);
-    color: var(--surface);
-}
+.auth-links { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1.25rem; text-align: center; }
+.auth-links a { font-weight: 700; }
 
-.login-visitor {
-    display: block;
-    margin-top: 16px;
-    text-align: center;
-    font-size: 0.9rem;
-    color: var(--blue);
-    text-decoration: none;
-}
-
-.login-register {
-    display: block;
-    margin-top: 18px;
-    text-align: center;
-    color: var(--blue);
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.login-register:hover {
-    color: var(--blue-dark);
-    text-decoration: underline;
-}
-
-.login-visitor:hover {
-    color: var(--blue-dark);
-    text-decoration: underline;
-}
-
-.login-card .alert {
-    font-size: 0.9rem;
-    padding: 10px 14px;
-}
-
-.login-footer {
-    margin-top: 18px;
-    text-align: center;
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.65);
-}
+.auth-footer { margin: 1.25rem 0 0; text-align: center; color: rgba(255, 255, 255, 0.85); font-size: 0.95rem; }

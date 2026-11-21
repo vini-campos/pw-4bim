@@ -84,29 +84,30 @@ if (!empty($_SESSION['message'])) {
 
 <head>
 	<meta charset="utf-8">
-	<title>Entrar | Gestão de Pessoas</title>
+	<title>Entrar | Crachá</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
 
 	<link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/bootstrap.min.css">
 	<link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/all.min.css">
-	<link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/login.css">
+	<link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/style.css?v=2">
+	<link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/login.css?v=2">
 </head>
 
-<body class="login-page">
+<body class="auth-body">
+	<div class="auth">
 
-	<div class="login-box">
+		<a class="auth-brand" href="<?php echo BASEURL; ?>index.php" style="text-decoration:none">
+			<i class="fa-solid fa-id-badge" aria-hidden="true"></i>
+			<span class="nome">Crachá</span>
+		</a>
 
-		<div class="login-brand">
-			<i class="fa-solid fa-people-group"></i><span class="login-tag">Gestão</span> de pessoas
-		</div>
-
-		<div class="login-card">
+		<div class="auth-card">
 			<h1>Entrar</h1>
-			<p class="login-sub">Acesse com seu usuário e senha.</p>
+			<p class="auth-sub">Acesse com seu usuário e senha.</p>
 
 			<?php if ($aviso): ?>
 				<div class="alert alert-<?php echo $aviso['tipo']; ?>" role="alert">
@@ -123,14 +124,14 @@ if (!empty($_SESSION['message'])) {
 			<form action="login.php" method="post">
 				<input type="hidden" name="csrf" value="<?php echo htmlspecialchars($_SESSION['csrf']); ?>">
 
-				<div class="mb-3">
-					<label for="login" class="form-label">Usuário</label>
+				<div class="form-group">
+					<label for="login">Usuário</label>
 					<input type="text" class="form-control" id="login" name="login" maxlength="50"
 						value="<?php echo htmlspecialchars($loginDigitado); ?>" required autofocus>
 				</div>
 
-				<div class="mb-3">
-					<label for="senha" class="form-label">Senha</label>
+				<div class="form-group">
+					<label for="senha">Senha</label>
 					<input type="password" class="form-control" id="senha" name="senha" required>
 				</div>
 
@@ -139,14 +140,15 @@ if (!empty($_SESSION['message'])) {
 				</button>
 			</form>
 
-			<a href="cadastro.php" class="login-register">Ainda não tem usuário? Cadastre-se</a>
-			<a href="index.php?visitante=1" class="login-visitor">Continuar sem login</a>
+			<div class="auth-links">
+				<a href="cadastro.php">Ainda não tem usuário? Cadastre-se</a>
+				<a href="index.php?visitante=1">Continuar sem login</a>
+			</div>
 		</div>
 
-		<div class="login-footer">&copy; <?php echo date('Y'); ?> - Matheus Mello e Luiz Felipe</div>
+		<p class="auth-footer">&copy; <?php echo date('Y'); ?> Vinicius Raphael &amp; Caio Henrique</p>
 
 	</div>
-
 </body>
 
 </html>

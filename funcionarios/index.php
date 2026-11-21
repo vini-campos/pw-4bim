@@ -6,7 +6,6 @@ include HEADER_TEMPLATE;
 
 <header class="page-heading">
     <div>
-        <p class="eyebrow">Equipe</p>
         <h2>Funcionários</h2>
         <p class="page-description">Consulte e mantenha os dados da equipe atualizados.</p>
     </div>
@@ -20,61 +19,48 @@ include HEADER_TEMPLATE;
 
 <?php exibir_mensagem(); ?>
 
-<div class="table-responsive">
-    <table class="table table-hover align-middle">
-        <thead>
-            <tr>
-                <th>Foto</th>
-                <th>Funcionário</th>
-                <th>Endereço</th>
-                <th>Idade</th>
-                <th>Nascimento</th>
-                <th class="text-end">Opções</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if ($funcionarios): ?>
-                <?php foreach ($funcionarios as $item): ?>
-                    <tr>
-                        <td>
-                            <?php if (!empty($item['Foto'])): ?>
-                                <img src="<?php echo h(BASEURL . 'uploads/funcionarios/' . rawurlencode(basename($item['Foto']))); ?>"
-                                    alt="Foto de <?php echo h($item['Nome']); ?>" class="employee-thumb">
-                            <?php else: ?>
-                                <span class="employee-thumb employee-placeholder" aria-hidden="true">
-                                    <i class="fa-solid fa-user"></i>
-                                </span>
-                            <?php endif; ?>
-                        </td>
-                        <td class="fw-semibold"><?php echo h($item['Nome']); ?></td>
-                        <td><?php echo h($item['Endereco']); ?></td>
-                        <td><?php echo (int) $item['Idade']; ?> anos</td>
-                        <td><?php echo h(formatData($item['DataNasc'], 'd/m/Y')); ?></td>
-                        <td class="actions text-end text-nowrap">
-                            <a href="view.php?id=<?php echo (int) $item['Id']; ?>" class="btn btn-sm btn-light" aria-label="Visualizar funcionário">
-                                <i class="fa-solid fa-eye"></i>
-                            </a>
-                            <?php if (esta_logado()): ?>
-                                <a href="edit.php?id=<?php echo (int) $item['Id']; ?>" class="btn btn-sm btn-secondary" aria-label="Editar funcionário">
-                                    <i class="fa-solid fa-pen"></i>
-                                </a>
-                                <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
-                                    data-bs-target="#delete-modal" data-customer="<?php echo (int) $item['Id']; ?>" data-rotulo="Funcionário"
-                                    aria-label="Excluir funcionário">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="6" class="empty-state">Nenhum funcionário cadastrado ainda.</td>
-                </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
-</div>
+<?php if ($funcionarios): ?>
+    <div class="cracha-grid">
+        <?php foreach ($funcionarios as $item): ?>
+            <?php $fotoFunc = !empty($item['Foto']) ? BASEURL . 'uploads/funcionarios/' . rawurlencode(basename($item['Foto'])) : null; ?>
+            <article class="cracha">
+                <div class="cracha-faixa">
+                    <span class="cracha-num">Nº <?php echo str_pad((int) $item['Id'], 3, '0', STR_PAD_LEFT); ?></span>
+                </div>
+                <div class="cracha-corpo">
+                    <?php if ($fotoFunc): ?>
+                        <img src="<?php echo h($fotoFunc); ?>" alt="Foto de <?php echo h($item['Nome']); ?>" class="cracha-foto">
+                    <?php else: ?>
+                        <span class="cracha-foto cracha-foto-vazia" aria-hidden="true"><i class="fa-solid fa-user"></i></span>
+                    <?php endif; ?>
+                    <h3 class="cracha-nome"><?php echo h($item['Nome']); ?></h3>
+                    <dl class="cracha-dados">
+                        <div><dt>Idade</dt><dd><?php echo (int) $item['Idade']; ?> anos</dd></div>
+                        <div><dt>Nascimento</dt><dd><?php echo h(formatData($item['DataNasc'], 'd/m/Y')); ?></dd></div>
+                        <div><dt>Endereço</dt><dd><?php echo h($item['Endereco']); ?></dd></div>
+                    </dl>
+                </div>
+                <div class="cracha-acoes">
+                    <a href="view.php?id=<?php echo (int) $item['Id']; ?>" class="btn btn-sm btn-light">
+                        <i class="fa-solid fa-eye"></i> Ver
+                    </a>
+                    <?php if (esta_logado()): ?>
+                        <a href="edit.php?id=<?php echo (int) $item['Id']; ?>" class="btn btn-sm btn-secondary">
+                            <i class="fa-solid fa-pen"></i> Editar
+                        </a>
+                        <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                            data-bs-target="#delete-modal" data-customer="<?php echo (int) $item['Id']; ?>" data-rotulo="Funcionário"
+                            aria-label="Excluir funcionário">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    <?php endif; ?>
+                </div>
+            </article>
+        <?php endforeach; ?>
+    </div>
+<?php else: ?>
+    <p class="empty-state">Nenhum funcionário cadastrado ainda.</p>
+<?php endif; ?>
 
 <?php include 'modal.php'; ?>
 <?php include FOOTER_TEMPLATE; ?>

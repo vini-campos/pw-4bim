@@ -29,6 +29,7 @@ function dadosUsuario($origem)
 		'Login_usu' => trim($origem['Login_usu'] ?? ''),
 		'Ativo_usu' => !empty($origem['Ativo_usu']) ? 1 : 0,
 		'Senha' => (string) ($origem['Senha'] ?? ''),
+		'Nivel_usu' => isset($origem['Nivel_usu']) ? (string) $origem['Nivel_usu'] : null,
 	];
 }
 
@@ -47,6 +48,10 @@ function validarUsuario($dados, $idAtual = 0)
 		if ($outro && (int) $outro[USUARIOS_PK] !== (int) $idAtual) {
 			$erros[] = 'Já existe um usuário com esse login.';
 		}
+	}
+
+	if (isset($dados['Nivel_usu']) && !in_array($dados['Nivel_usu'], ['0', '1'], true)) {
+		$erros[] = 'Perfil inválido.';
 	}
 
 	if ((int) $idAtual === 0 && $dados['Senha'] === '') {
@@ -149,6 +154,10 @@ function edit()
 		if ($ehEu) {
 			$dados['Ativo_usu'] = 1;
 		}
+		// o próprio usuário não muda o seu perfil; sem valor enviado, mantém o atual
+		if ($ehEu || $dados['Nivel_usu'] === null) {
+			$dados['Nivel_usu'] = (string) $atual['Nivel_usu'];
+		}
 
 		$erros = validarUsuario($dados, $id);
 		if ($erros) {
@@ -165,7 +174,7 @@ function edit()
 
 		$registro = [
 			'Login_usu' => $dados['Login_usu'],
-			'Nivel_usu' => (string) $atual['Nivel_usu'],
+			'Nivel_usu' => $dados['Nivel_usu'],
 			'Ativo_usu' => $dados['Ativo_usu'],
 		];
 		if ($dados['Senha'] !== '') {

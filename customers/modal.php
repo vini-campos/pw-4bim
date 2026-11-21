@@ -11,10 +11,10 @@
                 Deseja realmente excluir este item?
             </div>
             <div class="modal-footer">
-                <a id="confirm" class="btn btn-dark" href="#">
-                    <i class="fa-solid fa-circle-check"></i> Sim
+                <a id="confirm" class="btn btn-danger" href="#">
+                    <i class="fa-solid fa-trash"></i> Sim, excluir
                 </a>
-                <a id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">
+                <a id="cancel" class="btn btn-light" data-bs-dismiss="modal" role="button" href="#">
                     <i class="fa-solid fa-circle-xmark"></i> Não
                 </a>
             </div>

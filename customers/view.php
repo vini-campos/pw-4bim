@@ -4,31 +4,35 @@ view($_GET['id'] ?? null);
 include(HEADER_TEMPLATE);
 ?>
 
-<h2>Cliente #<?php echo (int) $cliente['Id_Cli']; ?></h2>
-<hr>
+<header class="page-heading">
+    <div>
+        <h2><?php echo h($cliente['Nome_Cli']); ?></h2>
+        <p class="page-description">Cliente #<?php echo (int) $cliente['Id_Cli']; ?></p>
+    </div>
+</header>
 
 <?php exibir_mensagem(); ?>
 
 <div class="detail-panel">
     <div class="detail-grid">
         <div class="detail-item">
-            <span class="detail-label">Nome:</span>
+            <span class="detail-label">Nome</span>
             <span class="detail-value"><?php echo h($cliente['Nome_Cli']); ?></span>
         </div>
         <div class="detail-item">
-            <span class="detail-label">CPF:</span>
+            <span class="detail-label">CPF</span>
             <span class="detail-value"><?php echo h($cliente['CPF_Cli']); ?></span>
         </div>
         <div class="detail-item">
-            <span class="detail-label">Telefone:</span>
+            <span class="detail-label">Telefone</span>
             <span class="detail-value"><?php echo h(formatTelefone($cliente['Tel_Cli'])); ?></span>
         </div>
         <div class="detail-item">
-            <span class="detail-label">E-mail:</span>
+            <span class="detail-label">E-mail</span>
             <span class="detail-value"><?php echo h($cliente['Email_Cli'] ?: '—'); ?></span>
         </div>
         <div class="detail-item">
-            <span class="detail-label">Endereço:</span>
+            <span class="detail-label">Endereço</span>
             <span class="detail-value"><?php echo h($cliente['Endereco_Cli'] ?: '—'); ?></span>
         </div>
     </div>

@@ -4,12 +4,16 @@ edit();
 include HEADER_TEMPLATE;
 ?>
 
-<h2>Atualizar Cliente</h2>
+<header class="page-heading">
+    <div>
+        <h2>Atualizar cliente</h2>
+        <p class="page-description">Altere os dados do cliente e salve.</p>
+    </div>
+</header>
 
 <?php exibir_mensagem(); ?>
 
-<form action="edit.php?id=<?php echo (int) $cliente['Id_Cli']; ?>" method="post">
-    <hr>
+<form action="edit.php?id=<?php echo (int) $cliente['Id_Cli']; ?>" method="post" class="record-form">
     <div class="row">
         <div class="form-group col-md-8">
             <label for="nome">Nome</label>
@@ -48,7 +52,7 @@ include HEADER_TEMPLATE;
 
     <div id="actions" class="row mt-3">
         <div class="col-md-12">
-            <button type="submit" class="btn btn-secondary mb-2">
+            <button type="submit" class="btn btn-primary">
                 <i class="fa-solid fa-floppy-disk"></i> Salvar
             </button>
             <a href="index.php" class="btn btn-light">
