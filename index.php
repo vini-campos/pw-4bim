@@ -23,121 +23,62 @@ try {
 }
 ?>
 
-<h1>Dashboard</h1>
-<hr>
+<section class="dashboard-welcome">
+	<div>
+		<p class="eyebrow">Painel de controle</p>
+		<h1>Gestão de pessoas</h1>
+		<p class="page-description">Organize as informações da sua equipe em um só lugar.</p>
+	</div>
+	<span class="welcome-icon" aria-hidden="true"><i class="fa-solid fa-people-group"></i></span>
+</section>
 
 <?php if (!$erro): ?>
 
-	<div class="row">
+	<div class="dashboard-grid">
 
 		<?php if (esta_logado()): ?>
-			<div class="col-xs-6 col-sm-3 col-md-2">
-				<a href="<?php echo BASEURL; ?>motos/add.php" class="btn btn-secondary">
-					<div class="row">
-						<div class="col-xs-12 text-center">
-							<i class="fa-solid fa-bicycle i"></i>
-						</div>
-						<div class="col-xs-12 text-center">
-							<p>Nova Moto</p>
-						</div>
-					</div>
-				</a>
-			</div>
-		<?php endif; ?>
-
-		<div class="col-xs-6 col-sm-3 col-md-2">
-			<a href="<?php echo BASEURL; ?>motos/" class="btn btn-light">
-				<div class="row">
-					<div class="col-xs-12 text-center">
-						<i class="fa-solid fa-motorcycle i"></i>
-					</div>
-					<div class="col-xs-12 text-center">
-						<p>Motos</p>
-					</div>
-				</div>
+			<a href="<?php echo BASEURL; ?>funcionarios/add.php" class="dashboard-card">
+				<span class="dashboard-card-icon"><i class="fa-solid fa-user-plus"></i></span>
+				<span><strong>Novo funcionário</strong><small>Adicionar alguém à equipe</small></span>
 			</a>
-		</div>
-
-						<?php if (esta_logado()): ?>
-			<div class="col-xs-6 col-sm-3 col-md-2">
-				<a href="<?php echo BASEURL; ?>customers/add.php" class="btn btn-secondary">
-					<div class="row">
-						<div class="col-xs-12 text-center">
-							<i class="fa-solid fa-user-plus i"></i>
-						</div>
-						<div class="col-xs-12 text-center">
-							<p>Novo Cliente</p>
-						</div>
-					</div>
-				</a>
-			</div>
 		<?php endif; ?>
 
-				<?php if (esta_logado()): ?>
-			<div class="col-xs-6 col-sm-3 col-md-2">
-				<a href="<?php echo BASEURL; ?>customers/add.php" class="btn btn-secondary">
-					<div class="row">
-						<div class="col-xs-12 text-center">
-							<i class="fa-solid fa-user-plus i"></i>
-						</div>
-						<div class="col-xs-12 text-center">
-							<p>Novo Cliente</p>
-						</div>
-					</div>
-				</a>
-			</div>
-		<?php endif; ?>
+		<a href="<?php echo BASEURL; ?>funcionarios/" class="dashboard-card">
+			<span class="dashboard-card-icon"><i class="fa-solid fa-people-group"></i></span>
+			<span><strong>Funcionários</strong><small>Consultar e gerenciar a equipe</small></span>
+		</a>
 
-		<div class="col-xs-6 col-sm-3 col-md-2">
-			<a href="<?php echo BASEURL; ?>customers/" class="btn btn-light">
-				<div class="row">
-					<div class="col-xs-12 text-center">
-						<i class="fa-solid fa-users i"></i>
-					</div>
-					<div class="col-xs-12 text-center">
-						<p>Clientes</p>
-					</div>
-				</div>
+		<?php if (esta_logado()): ?>
+			<a href="<?php echo BASEURL; ?>customers/add.php" class="dashboard-card">
+				<span class="dashboard-card-icon"><i class="fa-solid fa-user-tag"></i></span>
+				<span><strong>Novo cliente</strong><small>Adicionar um novo cliente</small></span>
 			</a>
-		</div>
+		<?php endif; ?>
+
+		<a href="<?php echo BASEURL; ?>customers/" class="dashboard-card">
+			<span class="dashboard-card-icon"><i class="fa-solid fa-address-book"></i></span>
+			<span><strong>Clientes</strong><small>Consultar cadastros de clientes</small></span>
+		</a>
 
 		<?php if (eh_admin()): ?>
-			<div class="col-xs-6 col-sm-3 col-md-2">
-				<a href="<?php echo BASEURL; ?>usuarios/add.php" class="btn btn-secondary">
-					<div class="row">
-						<div class="col-xs-12 text-center">
-							<i class="fa-solid fa-user-plus i"></i>
-						</div>
-						<div class="col-xs-12 text-center">
-							<p>Novo Usuário</p>
-						</div>
-					</div>
-				</a>
-			</div>
+			<a href="<?php echo BASEURL; ?>usuarios/add.php" class="dashboard-card">
+				<span class="dashboard-card-icon"><i class="fa-solid fa-user-shield"></i></span>
+				<span><strong>Novo usuário</strong><small>Criar acesso ao sistema</small></span>
+			</a>
 
-			<div class="col-xs-6 col-sm-3 col-md-2">
-				<a href="<?php echo BASEURL; ?>usuarios/" class="btn btn-light">
-					<div class="row">
-						<div class="col-xs-12 text-center">
-							<i class="fa-solid fa-user-shield i"></i>
-						</div>
-						<div class="col-xs-12 text-center">
-							<p>Usuários</p>
-						</div>
-					</div>
-				</a>
-			</div>
+			<a href="<?php echo BASEURL; ?>usuarios/" class="dashboard-card">
+				<span class="dashboard-card-icon"><i class="fa-solid fa-users-gear"></i></span>
+				<span><strong>Usuários</strong><small>Gerenciar acessos ao sistema</small></span>
+			</a>
 		<?php endif; ?>
 
 	</div>
 
 <?php else: ?>
 	<div class="alert alert-danger" role="alert">
-		<p><b>ERRO:</b> Não foi possível Conectar ao Banco de Dados!<br>
-			<?= h($erro) ?>
-		</p>
+		<strong>ERRO:</strong> Não foi possível conectar ao banco de dados.<br>
+		<?= h($erro) ?>
 	</div>
-
 <?php endif; ?>
 
 <?php include FOOTER_TEMPLATE; ?>

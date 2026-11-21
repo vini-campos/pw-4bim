@@ -9,7 +9,7 @@ function esta_logado()
 	return !empty($_SESSION['usuario']);
 }
 
-/** Admin = Nome_Permi da tabela Permi igual a "Admin" */
+/** O perfil Admin é definido pelo Nivel_usu no momento do login. */
 function eh_admin()
 {
 	return esta_logado() && ($_SESSION['usuario']['perfil'] ?? '') === 'Admin';
@@ -29,9 +29,7 @@ function exigir_admin()
 {
 	exigir_login();
 	if (!eh_admin()) {
-		$_SESSION['message'] = "Você não tem permissão para acessar essa área.";
-		$_SESSION['type'] = "danger";
-		header('Location: ' . BASEURL . 'index.php');
+		header('Location: ' . BASEURL . 'acesso-negado.php');
 		exit;
 	}
 }

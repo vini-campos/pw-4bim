@@ -3,14 +3,14 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Garage Motors</title>
+    <title>Gestão de Pessoas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="keywords" content="">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/all.min.css">
@@ -20,8 +20,8 @@
 <body>
     <nav class="navbar navbar-expand-lg fixed-top mb-3" data-bs-theme="dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="<?php echo BASEURL; ?>index.php"><i class="fa-solid fa-motorcycle"></i>
-                <span class="rl-tag">GARAGE</span> MOTORS</a>
+            <a class="navbar-brand" href="<?php echo BASEURL; ?>index.php"><i class="fa-solid fa-people-group"></i>
+                <span class="rl-tag">GESTÃO</span> DE PESSOAS</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCrud"
                 aria-controls="navbarCrud" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -33,14 +33,14 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
-                        <i class="fa-solid fa-motorcycle"></i> Motos
+                        <i class="fa-solid fa-people-group"></i> Funcionários
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="<?php echo BASEURL; ?>motos">
-                                <i class="fa-solid fa-motorcycle"></i> Gerenciar Motos</a></li>
+                        <li><a class="dropdown-item" href="<?php echo BASEURL; ?>funcionarios/">
+                                <i class="fa-solid fa-users"></i> Ver equipe</a></li>
                         <?php if (esta_logado()): ?>
-                            <li><a class="dropdown-item" href="<?php echo BASEURL; ?>motos/add.php">
-                                    <i class="fa-solid fa-bicycle"></i> Nova Moto</a></li>
+                            <li><a class="dropdown-item" href="<?php echo BASEURL; ?>funcionarios/add.php">
+                                    <i class="fa-solid fa-user-plus"></i> Novo funcionário</a></li>
                         <?php endif; ?>
                     </ul>
                 </li>
@@ -145,8 +145,8 @@
                         <dt class="col-sm-4">Acesso</dt>
                         <dd class="col-sm-8">
                             <?php echo $ehAdmin
-                                ? 'Clientes, motos e usuários (acesso total).'
-                                : 'Clientes e motos (cadastrar, editar e excluir).'; ?>
+                                ? 'Funcionários, clientes e usuários (acesso total).'
+                                : 'Funcionários e clientes (cadastrar, editar e excluir).'; ?>
                         </dd>
                     </dl>
                 </div>

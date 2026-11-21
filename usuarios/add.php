@@ -11,7 +11,7 @@ include HEADER_TEMPLATE;
 <form action="add.php" method="post" enctype="multipart/form-data">
     <hr>
     <div class="row">
-        <div class="form-group col-md-5">
+        <div class="form-group col-md-4">
             <label for="login">Usuário</label>
             <input type="text" class="form-control" id="login" name="usuario[Login_usu]" maxlength="50" required
                 autocomplete="off" value="<?php echo h($usuario['Login_usu'] ?? ''); ?>">
@@ -22,19 +22,6 @@ include HEADER_TEMPLATE;
             <input type="password" class="form-control" id="senha" name="usuario[Senha]" maxlength="72" required
                 autocomplete="new-password">
             <small class="rl-hint">Mínimo de 6 caracteres.</small>
-        </div>
-
-        <div class="form-group col-md-3">
-            <label for="perfil">Perfil</label>
-            <select class="form-select" id="perfil" name="usuario[Id_Permi]" required>
-                <option value="">Selecione...</option>
-                <?php foreach ($permissoes as $p): ?>
-                    <option value="<?php echo (int) $p['Id_Permi']; ?>"
-                        <?php echo ((int) ($usuario['Id_Permi'] ?? 0) === (int) $p['Id_Permi']) ? 'selected' : ''; ?>>
-                        <?php echo h($p['Nome_Permi']); ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
         </div>
     </div>
 
@@ -51,13 +38,6 @@ include HEADER_TEMPLATE;
             </div>
         </div>
 
-        <div class="form-group col-md-4 d-flex align-items-end">
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="ativo" name="usuario[Ativo_usu]" value="1"
-                    <?php echo (!isset($usuario) || !empty($usuario['Ativo_usu'])) ? 'checked' : ''; ?>>
-                <label class="form-check-label" for="ativo">Usuário ativo</label>
-            </div>
-        </div>
     </div>
 
     <div id="actions" class="row mt-3">

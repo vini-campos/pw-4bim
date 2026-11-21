@@ -29,15 +29,9 @@ $fotoAtual = foto_usuario_url($usuario['Foto_usu'] ?? null);
 
         <div class="form-group col-md-3">
             <label for="perfil">Perfil</label>
-            <select class="form-select" id="perfil" name="usuario[Id_Permi]" required
-                <?php echo $ehEu ? 'disabled' : ''; ?>>
-                <?php foreach ($permissoes as $p): ?>
-                    <option value="<?php echo (int) $p['Id_Permi']; ?>"
-                        <?php echo ((int) $usuario['Id_Permi'] === (int) $p['Id_Permi']) ? 'selected' : ''; ?>>
-                        <?php echo h($p['Nome_Permi']); ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+            <input type="text" class="form-control" id="perfil"
+                value="<?php echo h(nomePerfilUsuario($usuario['Nivel_usu'])); ?>" readonly>
+            <small class="rl-hint">O perfil não pode ser alterado nesta tela.</small>
         </div>
     </div>
 

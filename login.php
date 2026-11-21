@@ -84,12 +84,12 @@ if (!empty($_SESSION['message'])) {
 
 <head>
 	<meta charset="utf-8">
-	<title>Entrar | Gerenciamento de funcionarios</title>
+	<title>Entrar | Gestão de Pessoas</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 	<link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/bootstrap.min.css">
 	<link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/all.min.css">
@@ -101,7 +101,7 @@ if (!empty($_SESSION['message'])) {
 	<div class="login-box">
 
 		<div class="login-brand">
-			<i class="fa-solid fa-motorcycle"></i><span class="login-tag">Genreciador</span> de funcionários
+			<i class="fa-solid fa-people-group"></i><span class="login-tag">Gestão</span> de pessoas
 		</div>
 
 		<div class="login-card">
@@ -139,6 +139,7 @@ if (!empty($_SESSION['message'])) {
 				</button>
 			</form>
 
+			<a href="cadastro.php" class="login-register">Ainda não tem usuário? Cadastre-se</a>
 			<a href="index.php?visitante=1" class="login-visitor">Continuar sem login</a>
 		</div>
 

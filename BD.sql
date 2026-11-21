@@ -7,7 +7,6 @@ USE `BD`;
 DROP VIEW  IF EXISTS vw_login;
 DROP TABLE IF EXISTS Usuarios;
 DROP TABLE IF EXISTS Permi;
-DROP TABLE IF EXISTS motos;
 
 CREATE TABLE IF NOT EXISTS Funcionario (
   Id        INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -38,7 +37,7 @@ CREATE TABLE IF NOT EXISTS Usuarios (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO Usuarios (Login_usu, Senha_usu, Nivel_usu) VALUES
-  ('admin',   '$2y$10$u8bMgvzFnp5PhNNH7BTlvuX2eQI9pOv7ePThg3IlLPuPh4KLLCDrq', '1'),
+  ('admin',   '$2b$10$rktfi8xpZBUcwY9bwQCuU.JxJKNRaLbtS5E4cxeZIpKcdpzmfnV1.', '1'),
   ('usuario', '$2y$10$ldGuxBa1dxjOa8959QNoROa9KRRwj1LdCtd1qYLznCacJgMacsMC6', '0')
 ON DUPLICATE KEY UPDATE
   Senha_usu = VALUES(Senha_usu),

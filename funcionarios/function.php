@@ -1,290 +1,270 @@
 <?php
-ob_start(); //output buffer aberto, para não dar erro de header location
+ob_start();
 
 include('../config.php');
 include(DBAPI);
 include_once('../inc/auth.php');
 
-const MOTOS_TABELA = 'motos';
+const FUNCIONARIOS_TABELA = 'Funcionario';
 
-$customers = null;
-$customer = null;
+$funcionarios = null;
+$funcionario = null;
 
-/**
- *  Formatar as datas
- */
+function definir_erro($mensagens)
+{
+	$_SESSION['message'] = is_array($mensagens) ? implode('<br>', $mensagens) : $mensagens;
+	$_SESSION['type'] = 'danger';
+}
+
 function formatData($data, $formato)
 {
 	if (empty($data)) {
 		return '—';
 	}
-	$dt = new Datetime($data, new DateTimeZone("America/Sao_Paulo"));
+	$dt = new DateTime($data, new DateTimeZone('America/Sao_Paulo'));
 	return $dt->format($formato);
 }
 
-/**
- *  Formatar os telefones
- */
-function telefone($tel)
-{ //15999990000
-	return "(" . substr($tel, 0, 2) . ")" . substr($tel, 2, 5)
-		. "-" . substr($tel, 7, 4);
+function calcularIdade($dataNasc)
+{
+	$dt = DateTime::createFromFormat('!Y-m-d', $dataNasc);
+	if (!$dt) {
+		return '';
+	}
+	return (string) $dt->diff(new DateTime('today', new DateTimeZone('America/Sao_Paulo')))->y;
 }
 
-/**
- *  Formatar os cep´s
- */
-function cep($cep)
+function dadosFuncionario($origem)
 {
-	return substr($cep, 0, 5) . "-" . substr($cep, 5, 3);
-}
+	$dataNasc = trim($origem['DataNasc'] ?? '');
 
-/**
- *  Pega só os campos permitidos do formulário (ignora qualquer outro)
- */
-function dadosMoto($origem)
-{
 	return [
-		'Modelo' => trim($origem['Modelo'] ?? ''),
-		'Marca'  => trim($origem['Marca'] ?? ''),
-		'Motor'  => trim($origem['Motor'] ?? ''),
+		'Nome' => trim($origem['Nome'] ?? ''),
+		'Endereco' => trim($origem['Endereco'] ?? ''),
+		'Idade' => calcularIdade($dataNasc), // ignora qualquer Idade vinda do formulário
+		'DataNasc' => $dataNasc,
 	];
 }
 
-/**
- *  Validação: campos obrigatórios e tamanho máximo (igual às colunas do banco)
- */
-function validarMoto($dados)
+function validarFuncionario($dados)
 {
-	$limites = ['Modelo' => 50, 'Marca' => 30, 'Motor' => 20];
 	$erros = [];
 
-	foreach ($limites as $campo => $max) {
-		if ($dados[$campo] === '') {
-			$erros[] = "O campo $campo é obrigatório.";
-		} elseif (mb_strlen($dados[$campo]) > $max) {
-			$erros[] = "O campo $campo aceita no máximo $max caracteres.";
-		}
+	if ($dados['Nome'] === '') {
+		$erros[] = 'O campo Nome é obrigatório.';
+	} elseif (mb_strlen($dados['Nome']) > 50) {
+		$erros[] = 'O Nome aceita no máximo 50 caracteres.';
 	}
+
+	if ($dados['Endereco'] === '') {
+		$erros[] = 'O campo Endereço é obrigatório.';
+	} elseif (mb_strlen($dados['Endereco']) > 50) {
+		$erros[] = 'O Endereço aceita no máximo 50 caracteres.';
+	}
+
+	$dataNasc = DateTime::createFromFormat('!Y-m-d', $dados['DataNasc']);
+	$errosData = DateTime::getLastErrors();
+	if (!$dataNasc || ($errosData && ($errosData['warning_count'] || $errosData['error_count']))
+		|| $dataNasc->format('Y-m-d') !== $dados['DataNasc']
+		|| $dataNasc > new DateTime('today')) {
+		$erros[] = 'Informe uma data de nascimento válida, que não seja futura.';
+	} elseif ((int) $dados['Idade'] > 120) {
+		$erros[] = 'A data de nascimento resulta em uma idade maior que 120 anos.';
+	}
+
 	return $erros;
 }
 
-function definir_erro($mensagens)
+function uploadFotoFuncionario($fotoAtual = null)
 {
-	$_SESSION['message'] = is_array($mensagens) ? implode('<br>', $mensagens) : $mensagens;
-	$_SESSION['type'] = "danger";
-}
-
-/**
- *  Listagem de Motos (pública: visitante também vê)
- */
-function index()
-{
-	global $customers;
-	$customers = find_all(MOTOS_TABELA);
-}
-
-/**
- *  Upload da imagem.
- *  Retorna: nome do arquivo novo, a imagem atual (se nada foi enviado) ou false se deu erro.
- */
-function uploadImagem($imagemAtual = null)
-{
-	if (empty($_FILES['customer']['name']['imagem']) || $_FILES['customer']['error']['imagem'] === UPLOAD_ERR_NO_FILE) {
-		return $imagemAtual;
+	if (empty($_FILES['foto']['name']) || $_FILES['foto']['error'] === UPLOAD_ERR_NO_FILE) {
+		return $fotoAtual;
 	}
 
-	if ($_FILES['customer']['error']['imagem'] !== UPLOAD_ERR_OK) {
-		definir_erro("Não foi possível enviar a imagem.");
+	if ($_FILES['foto']['error'] !== UPLOAD_ERR_OK) {
+		definir_erro('Não foi possível enviar a foto.');
 		return false;
 	}
 
-	$extensoesPermitidas = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-	$nomeOriginal = $_FILES['customer']['name']['imagem'];
-	$extensao = strtolower(pathinfo($nomeOriginal, PATHINFO_EXTENSION));
-
-	if (!in_array($extensao, $extensoesPermitidas)) {
-		definir_erro("Formato de imagem não permitido. Use JPG, PNG, GIF ou WEBP.");
+	$extensao = strtolower(pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION));
+	if (!in_array($extensao, ['jpg', 'jpeg', 'png', 'gif', 'webp'], true)) {
+		definir_erro('Formato não permitido. Use JPG, PNG, GIF ou WEBP.');
+		return false;
+	}
+	if ($_FILES['foto']['size'] > 2 * 1024 * 1024) {
+		definir_erro('A foto deve ter no máximo 2MB.');
+		return false;
+	}
+	if (@getimagesize($_FILES['foto']['tmp_name']) === false) {
+		definir_erro('O arquivo enviado não é uma imagem válida.');
 		return false;
 	}
 
-	if ($_FILES['customer']['size']['imagem'] > 2 * 1024 * 1024) { // 2MB
-		definir_erro("A imagem deve ter no máximo 2MB.");
+	$pasta = ABSPATH . 'uploads/funcionarios/';
+	if (!is_dir($pasta) && !mkdir($pasta, 0755, true) && !is_dir($pasta)) {
+		definir_erro('Não foi possível preparar a pasta para salvar a foto.');
 		return false;
 	}
 
-	// confere se o conteúdo é mesmo uma imagem, e não só a extensão
-	if (@getimagesize($_FILES['customer']['tmp_name']['imagem']) === false) {
-		definir_erro("O arquivo enviado não é uma imagem válida.");
-		return false;
-	}
-
-	$pastaUploads = __DIR__ . '/../uploads/';
-	if (!is_dir($pastaUploads)) {
-		mkdir($pastaUploads, 0755, true);
-	}
-
-	// nome curto o suficiente para caber na coluna varchar(30)
-	$nomeArquivo = substr(md5(uniqid('', true)), 0, 20) . '.' . $extensao;
-
-	if (!move_uploaded_file($_FILES['customer']['tmp_name']['imagem'], $pastaUploads . $nomeArquivo)) {
-		definir_erro("Não foi possível salvar a imagem no servidor.");
+	$nomeArquivo = bin2hex(random_bytes(8)) . '.' . $extensao;
+	if (!move_uploaded_file($_FILES['foto']['tmp_name'], $pasta . $nomeArquivo)) {
+		definir_erro('Não foi possível salvar a foto no servidor.');
 		return false;
 	}
 
 	return $nomeArquivo;
 }
 
-/**
- *  Apaga o arquivo de imagem da pasta uploads
- */
-function apagarImagem($nomeArquivo)
+function apagarFotoFuncionario($nomeArquivo)
 {
 	if (empty($nomeArquivo)) {
 		return;
 	}
-	$caminho = __DIR__ . '/../uploads/' . basename($nomeArquivo);
+	$caminho = ABSPATH . 'uploads/funcionarios/' . basename($nomeArquivo);
 	if (is_file($caminho)) {
 		unlink($caminho);
 	}
 }
 
-/**
- *  Visualização de uma Moto (pública)
- */
+function index()
+{
+	global $funcionarios;
+	$funcionarios = find_all(FUNCIONARIOS_TABELA, 'Nome');
+}
+
 function view($id = null)
 {
-	global $customer;
+	global $funcionario;
 
 	$id = (int) $id;
-	$customer = $id > 0 ? find(MOTOS_TABELA, $id) : null;
-
-	if (!$customer) {
-		$_SESSION['message'] = "Moto não encontrada.";
-		$_SESSION['type'] = "warning";
-		header('location: index.php');
+	$funcionario = $id > 0 ? find(FUNCIONARIOS_TABELA, $id) : null;
+	if (!$funcionario) {
+		$_SESSION['message'] = 'Funcionário não encontrado.';
+		$_SESSION['type'] = 'warning';
+		header('Location: index.php');
 		exit;
 	}
 }
 
-/**
- *  Cadastro de Motos (exige login)
- */
 function add()
 {
-	global $customer;
+	global $funcionario;
 	exigir_login();
 
-	if (empty($_POST['customer'])) {
+	if (empty($_POST['funcionario'])) {
 		return;
 	}
 
-	$dados = dadosMoto($_POST['customer']);
-	$customer = $dados; // mantém o que foi digitado se houver erro
-
-	$erros = validarMoto($dados);
+	$dados = dadosFuncionario($_POST['funcionario']);
+	$funcionario = $dados;
+	$erros = validarFuncionario($dados);
 	if ($erros) {
 		definir_erro($erros);
 		return;
 	}
 
-	$imagem = uploadImagem();
-	if ($imagem === false) {
+	$foto = uploadFotoFuncionario();
+	if ($foto === false) {
 		return;
 	}
 
-	$hoje = new DateTime('now', new DateTimeZone('America/Sao_Paulo'));
-	$dados['DataCad'] = $hoje->format("Y-m-d H:i:s");
-	if ($imagem) {
-		$dados['Imagem'] = $imagem;
+	$registro = [
+		'Nome' => $dados['Nome'],
+		'Endereco' => $dados['Endereco'],
+		'Idade' => (int) $dados['Idade'],
+		'DataNasc' => $dados['DataNasc'] . ' 00:00:00',
+	];
+	if ($foto) {
+		$registro['Foto'] = $foto;
 	}
 
-	save(MOTOS_TABELA, $dados);
-	header('location: index.php');
-	exit;
+	if (save(FUNCIONARIOS_TABELA, $registro)) {
+		header('Location: index.php');
+		exit;
+	}
+	apagarFotoFuncionario($foto);
 }
 
-/**
- *	Atualização/Edição de Moto (exige login)
- */
 function edit()
 {
-	global $customer;
+	global $funcionario;
 	exigir_login();
 
 	$id = (int) ($_GET['id'] ?? 0);
 	if ($id <= 0) {
-		header('location: index.php');
+		header('Location: index.php');
 		exit;
 	}
 
-	$atual = find(MOTOS_TABELA, $id);
+	$atual = find(FUNCIONARIOS_TABELA, $id);
 	if (!$atual) {
-		$_SESSION['message'] = "Moto não encontrada.";
-		$_SESSION['type'] = "warning";
-		header('location: index.php');
+		$_SESSION['message'] = 'Funcionário não encontrado.';
+		$_SESSION['type'] = 'warning';
+		header('Location: index.php');
 		exit;
 	}
 
-	if (isset($_POST['customer'])) {
-		$dados = dadosMoto($_POST['customer']);
-		$erros = validarMoto($dados);
-
+	if (isset($_POST['funcionario'])) {
+		$dados = dadosFuncionario($_POST['funcionario']);
+		$erros = validarFuncionario($dados);
 		if ($erros) {
 			definir_erro($erros);
-			$customer = array_merge($atual, $dados); // mantém o que foi digitado
+			$funcionario = array_merge($atual, $dados);
 			return;
 		}
 
-		$imagem = uploadImagem($atual['Imagem'] ?? null);
-		if ($imagem === false) {
-			$customer = array_merge($atual, $dados);
+		$foto = uploadFotoFuncionario($atual['Foto'] ?? null);
+		if ($foto === false) {
+			$funcionario = array_merge($atual, $dados);
 			return;
 		}
 
-		if ($imagem) {
-			$dados['Imagem'] = $imagem;
+		$registro = [
+			'Nome' => $dados['Nome'],
+			'Endereco' => $dados['Endereco'],
+			'Idade' => (int) $dados['Idade'],
+			'DataNasc' => $dados['DataNasc'] . ' 00:00:00',
+		];
+		if ($foto) {
+			$registro['Foto'] = $foto;
 		}
 
-		update(MOTOS_TABELA, $id, $dados);
-
-		// trocou a imagem: apaga a antiga
-		if ($imagem && $imagem !== ($atual['Imagem'] ?? null)) {
-			apagarImagem($atual['Imagem'] ?? null);
+		if (update(FUNCIONARIOS_TABELA, $id, $registro)) {
+			if ($foto && $foto !== ($atual['Foto'] ?? null)) {
+				apagarFotoFuncionario($atual['Foto'] ?? null);
+			}
+			header('Location: index.php');
+			exit;
 		}
 
-		header("location: index.php");
-		exit;
+		if ($foto && $foto !== ($atual['Foto'] ?? null)) {
+			apagarFotoFuncionario($foto);
+		}
+		$funcionario = array_merge($atual, $dados);
+		return;
 	}
 
-	$customer = $atual;
+	$funcionario = $atual;
 }
 
-/**
- *  Exclusão de uma Moto (exige login)
- */
 function delete($id = null)
 {
 	exigir_login();
 
 	$id = (int) $id;
 	if ($id > 0) {
-		$atual = find(MOTOS_TABELA, $id);
-
+		$atual = find(FUNCIONARIOS_TABELA, $id);
 		if ($atual) {
-			remove(MOTOS_TABELA, $id);
-
-			if (($_SESSION['type'] ?? '') === 'success') {
-				apagarImagem($atual['Imagem'] ?? null);
+			if (remove(FUNCIONARIOS_TABELA, $id)) {
+				apagarFotoFuncionario($atual['Foto'] ?? null);
 			}
 		} else {
-			$_SESSION['message'] = "Moto não encontrada.";
-			$_SESSION['type'] = "warning";
+			$_SESSION['message'] = 'Funcionário não encontrado.';
+			$_SESSION['type'] = 'warning';
 		}
 	}
 
-	header("location: index.php");
+	header('Location: index.php');
 	exit;
 }
-
 ?>

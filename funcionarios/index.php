@@ -1,75 +1,80 @@
 <?php
-    include("function.php");
-    index();
-    include HEADER_TEMPLATE;
+include 'function.php';
+index();
+include HEADER_TEMPLATE;
 ?>
 
-<header>
-    <div class="row">
-        <div class="col-sm-6">
-            <h2>Motos</h2>
-        </div>
-        <div class="col-sm-6 text-end h2">
-            <?php if (esta_logado()): ?>
-                <a class="btn btn-secondary mb-2" href="add.php"><i class="fa-solid fa-bicycle"></i> Nova Moto</a>
-            <?php endif; ?>
-            <a class="btn btn-light" href="index.php"><i class="fa-solid fa-refresh"></i> Atualizar</a>
-        </div>
+<header class="page-heading">
+    <div>
+        <p class="eyebrow">Equipe</p>
+        <h2>Funcionários</h2>
+        <p class="page-description">Consulte e mantenha os dados da equipe atualizados.</p>
+    </div>
+    <div class="page-actions">
+        <?php if (esta_logado()): ?>
+            <a class="btn btn-primary" href="add.php"><i class="fa-solid fa-user-plus"></i> Novo funcionário</a>
+        <?php endif; ?>
+        <a class="btn btn-light" href="index.php"><i class="fa-solid fa-rotate"></i> Atualizar</a>
     </div>
 </header>
 
-<?php if (!empty($_SESSION['message'])): ?>
-    <div class="alert alert-<?php echo h($_SESSION['type']); ?> alert-dismissible fade show" role="alert">
-        <?php echo $_SESSION['message']; ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
-    </div>
-    <?php clear_messages(); ?>
-<?php endif; ?>
+<?php exibir_mensagem(); ?>
 
-<hr>
-
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th width="30%">Modelo</th>
-            <th>Marca</th>
-            <th>Motor</th>
-            <th>Atualizado em</th>
-            <th>Opções</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php if ($customers): ?>
-            <?php foreach ($customers as $customer): ?>
-                <tr>
-                    <td><?php echo (int) $customer['Id']; ?></td>
-                    <td><?php echo h($customer['Modelo']); ?></td>
-                    <td><?php echo h($customer['Marca']); ?></td>
-                    <td><?php echo h($customer['Motor']); ?></td>
-                    <td><?php echo formatData($customer['DataCad'], "d/m/Y - H:i:s"); ?></td>
-                    <td class="actions text-end">
-                        <a href="view.php?id=<?php echo (int) $customer['Id']; ?>" class="btn btn-sm btn-light">
-                            <i class="fa fa-eye"></i> Visualizar</a>
-
-                        <?php if (esta_logado()): ?>
-                            <a href="edit.php?id=<?php echo (int) $customer['Id']; ?>"  class="btn btn-sm btn-secondary">
-                                <i class="fa fa-pencil"></i> Editar</a>
-                            <a href="#" class="btn btn-sm btn-dark mt-2" data-bs-toggle="modal"
-                                data-bs-target="#delete-modal" data-customer="<?php echo (int) $customer['Id']; ?>" data-rotulo="Moto">
-                                <i class="fa fa-trash" ></i> Excluir
-                            </a>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        <?php else: ?>
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead>
             <tr>
-                <td colspan="6">Nenhum registro encontrado.</td>
+                <th>Foto</th>
+                <th>Funcionário</th>
+                <th>Endereço</th>
+                <th>Idade</th>
+                <th>Nascimento</th>
+                <th class="text-end">Opções</th>
             </tr>
-        <?php endif; ?>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <?php if ($funcionarios): ?>
+                <?php foreach ($funcionarios as $item): ?>
+                    <tr>
+                        <td>
+                            <?php if (!empty($item['Foto'])): ?>
+                                <img src="<?php echo h(BASEURL . 'uploads/funcionarios/' . rawurlencode(basename($item['Foto']))); ?>"
+                                    alt="Foto de <?php echo h($item['Nome']); ?>" class="employee-thumb">
+                            <?php else: ?>
+                                <span class="employee-thumb employee-placeholder" aria-hidden="true">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                            <?php endif; ?>
+                        </td>
+                        <td class="fw-semibold"><?php echo h($item['Nome']); ?></td>
+                        <td><?php echo h($item['Endereco']); ?></td>
+                        <td><?php echo (int) $item['Idade']; ?> anos</td>
+                        <td><?php echo h(formatData($item['DataNasc'], 'd/m/Y')); ?></td>
+                        <td class="actions text-end text-nowrap">
+                            <a href="view.php?id=<?php echo (int) $item['Id']; ?>" class="btn btn-sm btn-light" aria-label="Visualizar funcionário">
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
+                            <?php if (esta_logado()): ?>
+                                <a href="edit.php?id=<?php echo (int) $item['Id']; ?>" class="btn btn-sm btn-secondary" aria-label="Editar funcionário">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                                <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                                    data-bs-target="#delete-modal" data-customer="<?php echo (int) $item['Id']; ?>" data-rotulo="Funcionário"
+                                    aria-label="Excluir funcionário">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="6" class="empty-state">Nenhum funcionário cadastrado ainda.</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+</div>
 
-<?php include "modal.php"; ?>
+<?php include 'modal.php'; ?>
 <?php include FOOTER_TEMPLATE; ?>

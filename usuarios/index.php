@@ -36,7 +36,7 @@
             <?php foreach ($usuarios as $u): ?>
                 <?php
                     $foto = foto_usuario_url($u['Foto_usu'] ?? null);
-                    $perfil = nomePermissao($u['Id_Permi']);
+                    $perfil = nomePerfilUsuario($u['Nivel_usu']);
                     $ehEu = ((int) $u['Id_Usu'] === (int) $_SESSION['usuario']['id']);
                 ?>
                 <tr>
