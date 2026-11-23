@@ -1,7 +1,7 @@
     </main>
 
     <footer class="app-footer">
-        <span><strong>Crachá</strong> gestão de pessoas</span>
+        <span><strong>Gerenciador</strong> de pessoas</span>
         <span>&copy; <?php echo date('Y'); ?> Vinicius Raphael &amp; Caio Henrique</span>
     </footer>
     </div>

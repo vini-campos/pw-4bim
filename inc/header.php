@@ -18,7 +18,7 @@ $navAtivo = function ($nome) use ($secaoAtual) {
 
 <head>
     <meta charset="utf-8">
-    <title>Crachá | Gestão de pessoas</title>
+    <title>Gerenciador funcionários</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Crachá: cadastro de funcionários, clientes e usuários.">
 
@@ -35,8 +35,8 @@ $navAtivo = function ($nome) use ($secaoAtual) {
     <nav class="navbar navbar-expand-lg topnav" aria-label="Menu principal">
         <div class="topnav-inner">
             <a class="brand" href="<?php echo BASEURL; ?>index.php">
-                <i class="fa-solid fa-id-badge brand-icon" aria-hidden="true"></i>
-                <span class="brand-name">Crachá</span>
+                <i aria-hidden="true"></i>
+                <span class="brand-name">Gerenciador</span>
             </a>
 
             <button class="menu-toggle d-lg-none ms-auto" type="button" data-bs-toggle="collapse"

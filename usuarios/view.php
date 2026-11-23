@@ -19,6 +19,17 @@ $perfil = nomePerfilUsuario($usuario['Nivel_usu']);
 <div class="detail-panel">
     <div class="detail-grid">
         <div class="detail-item">
+            <span class="detail-label">Foto</span>
+            <span class="detail-value">
+                <?php if ($foto): ?>
+                    <img src="<?php echo h($foto); ?>" alt="Foto de <?php echo h($usuario['Login_usu']); ?>"
+                        class="detail-image">
+                <?php else: ?>
+                    &mdash;
+                <?php endif; ?>
+            </span>
+        </div>
+        <div class="detail-item">
             <span class="detail-label">Usuário</span>
             <span class="detail-value"><?php echo h($usuario['Login_usu']); ?></span>
         </div>
@@ -30,17 +41,7 @@ $perfil = nomePerfilUsuario($usuario['Nivel_usu']);
             <span class="detail-label">Status</span>
             <span class="detail-value"><?php echo $usuario['Ativo_usu'] ? 'Ativo' : 'Inativo'; ?></span>
         </div>
-        <div class="detail-item">
-            <span class="detail-label">Foto</span>
-            <span class="detail-value">
-                <?php if ($foto): ?>
-                    <img src="<?php echo h($foto); ?>" alt="Foto de <?php echo h($usuario['Login_usu']); ?>"
-                        class="detail-image">
-                <?php else: ?>
-                    &mdash;
-                <?php endif; ?>
-            </span>
-        </div>
+        
     </div>
 </div>
 
