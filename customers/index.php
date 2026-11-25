@@ -4,24 +4,22 @@
     include HEADER_TEMPLATE;
 ?>
 
-<header>
-    <div class="row">
-        <div class="col-sm-6">
-            <h2>Clientes</h2>
-        </div>
-        <div class="col-sm-6 text-end h2">
-            <?php if (esta_logado()): ?>
-                <a class="btn btn-secondary mb-2" href="add.php"><i class="fa-solid fa-user-plus"></i> Novo Cliente</a>
-            <?php endif; ?>
-            <a class="btn btn-light" href="index.php"><i class="fa-solid fa-refresh"></i> Atualizar</a>
-        </div>
+<header class="page-heading">
+    <div>
+        <h2>Clientes</h2>
+        <p class="page-description">Consulte e mantenha os cadastros de clientes.</p>
+    </div>
+    <div class="page-actions">
+        <?php if (esta_logado()): ?>
+            <a class="btn btn-primary" href="add.php"><i class="fa-solid fa-user-plus"></i> Novo cliente</a>
+        <?php endif; ?>
+        <a class="btn btn-light" href="index.php"><i class="fa-solid fa-rotate"></i> Atualizar</a>
     </div>
 </header>
 
 <?php exibir_mensagem(); ?>
 
-<hr>
-
+<div class="table-responsive">
 <table class="table table-hover">
     <thead>
         <tr>
@@ -49,7 +47,7 @@
                         <?php if (esta_logado()): ?>
                             <a href="edit.php?id=<?php echo (int) $c['Id_Cli']; ?>" class="btn btn-sm btn-secondary">
                                 <i class="fa fa-pencil"></i> Editar</a>
-                            <a href="#" class="btn btn-sm btn-dark mt-2" data-bs-toggle="modal"
+                            <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
                                 data-bs-target="#delete-modal" data-customer="<?php echo (int) $c['Id_Cli']; ?>"
                                 data-rotulo="Cliente" data-nome="<?php echo h($c['Nome_Cli']); ?>">
                                 <i class="fa fa-trash"></i> Excluir
@@ -60,11 +58,12 @@
             <?php endforeach; ?>
         <?php else: ?>
             <tr>
-                <td colspan="6">Nenhum cliente encontrado.</td>
+                <td colspan="6" class="empty-state">Nenhum cliente encontrado.</td>
             </tr>
         <?php endif; ?>
     </tbody>
 </table>
+</div>
 
 <?php include "modal.php"; ?>
 <?php include FOOTER_TEMPLATE; ?>

@@ -86,27 +86,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <head>
 	<meta charset="utf-8">
-	<title>Criar acesso | Gestão de Pessoas</title>
+	<title>Criar acesso | Crachá</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
 
 	<link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/bootstrap.min.css">
 	<link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/all.min.css">
-	<link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/login.css">
+	<link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/style.css?v=2">
+	<link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/login.css?v=2">
 </head>
 
-<body class="login-page">
-	<div class="login-box">
-		<div class="login-brand">
-			<i class="fa-solid fa-people-group"></i><span class="login-tag">Gestão</span> de pessoas
-		</div>
+<body class="auth-body">
+	<div class="auth">
 
-		<div class="login-card">
+		<a class="auth-brand" href="<?php echo BASEURL; ?>index.php" style="text-decoration:none">
+			<i class="fa-solid fa-id-badge" aria-hidden="true"></i>
+			<span class="nome">Crachá</span>
+		</a>
+
+		<div class="auth-card">
 			<h1>Criar acesso</h1>
-			<p class="login-sub">Cadastre seu usuário para acessar o sistema como funcionário.</p>
+			<p class="auth-sub">Cadastre seu usuário para acessar o sistema como funcionário.</p>
 
 			<?php if ($erro): ?>
 				<div class="alert alert-danger" role="alert"><?php echo htmlspecialchars($erro, ENT_QUOTES, 'UTF-8'); ?></div>
@@ -115,22 +118,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			<form action="cadastro.php" method="post">
 				<input type="hidden" name="csrf" value="<?php echo htmlspecialchars($_SESSION['csrf_cadastro'], ENT_QUOTES, 'UTF-8'); ?>">
 
-				<div class="mb-3">
-					<label for="login" class="form-label">Usuário</label>
+				<div class="form-group">
+					<label for="login">Usuário</label>
 					<input type="text" class="form-control" id="login" name="login" minlength="3" maxlength="50"
 						pattern="[A-Za-z0-9._ -]+" autocomplete="username" required autofocus
 						value="<?php echo htmlspecialchars($loginDigitado, ENT_QUOTES, 'UTF-8'); ?>">
 					<small class="login-hint">3 a 50 caracteres: letras, números, espaços, ponto, hífen ou sublinhado.</small>
 				</div>
 
-				<div class="mb-3">
-					<label for="senha" class="form-label">Senha</label>
+				<div class="form-group">
+					<label for="senha">Senha</label>
 					<input type="password" class="form-control" id="senha" name="senha" minlength="6" maxlength="72"
 						autocomplete="new-password" required>
 				</div>
 
-				<div class="mb-3">
-					<label for="confirmacao" class="form-label">Confirmar senha</label>
+				<div class="form-group">
+					<label for="confirmacao">Confirmar senha</label>
 					<input type="password" class="form-control" id="confirmacao" name="confirmacao" minlength="6" maxlength="72"
 						autocomplete="new-password" required>
 				</div>
@@ -140,10 +143,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				</button>
 			</form>
 
-			<a href="login.php" class="login-visitor">Já tem acesso? Entrar</a>
+			<div class="auth-links">
+				<a href="login.php">Já tem acesso? Entrar</a>
+			</div>
 		</div>
 
-		<div class="login-footer">&copy; <?php echo date('Y'); ?> - Matheus Mello e Luiz Felipe</div>
+		<p class="auth-footer">&copy; <?php echo date('Y'); ?> Vinicius Raphael &amp; Caio Henrique</p>
+
 	</div>
 </body>
 

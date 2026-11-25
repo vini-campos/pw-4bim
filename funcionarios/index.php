@@ -6,7 +6,6 @@ include HEADER_TEMPLATE;
 
 <header class="page-heading">
     <div>
-        <p class="eyebrow">Equipe</p>
         <h2>Funcionários</h2>
         <p class="page-description">Consulte e mantenha os dados da equipe atualizados.</p>
     </div>

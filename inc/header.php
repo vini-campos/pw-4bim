@@ -1,103 +1,86 @@
+<?php
+$rotaAtual = $_SERVER['SCRIPT_NAME'] ?? '';
+if (strpos($rotaAtual, '/funcionarios/') !== false) {
+    $secaoAtual = 'funcionarios';
+} elseif (strpos($rotaAtual, '/customers/') !== false) {
+    $secaoAtual = 'clientes';
+} elseif (strpos($rotaAtual, '/usuarios/') !== false) {
+    $secaoAtual = 'usuarios';
+} else {
+    $secaoAtual = 'painel';
+}
+$navAtivo = function ($nome) use ($secaoAtual) {
+    return $secaoAtual === $nome ? ' class="ativo" aria-current="page"' : '';
+};
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
     <meta charset="utf-8">
-    <title>Gestão de Pessoas</title>
+    <title>Gerenciador funcionários</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
+    <meta name="description" content="Crachá: cadastro de funcionários, clientes e usuários.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/all.min.css">
-    <link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/style.css?v=2">
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-lg fixed-top mb-3" data-bs-theme="dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="<?php echo BASEURL; ?>index.php"><i class="fa-solid fa-people-group"></i>
-                <span class="rl-tag">GESTÃO</span> DE PESSOAS</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCrud"
-                aria-controls="navbarCrud" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+<body class="app-body">
+    <nav class="navbar navbar-expand-lg topnav" aria-label="Menu principal">
+        <div class="topnav-inner">
+            <a class="brand" href="<?php echo BASEURL; ?>index.php">
+                <i aria-hidden="true"></i>
+                <span class="brand-name">Gerenciador</span>
+            </a>
+
+            <button class="menu-toggle d-lg-none ms-auto" type="button" data-bs-toggle="collapse"
+                data-bs-target="#menu-principal" aria-controls="menu-principal" aria-expanded="false"
+                aria-label="Abrir menu">
+                <i class="fa-solid fa-bars"></i>
             </button>
-            <div class="collapse navbar-collapse" id="navbarCrud">
-                
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        <i class="fa-solid fa-people-group"></i> Funcionários
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="<?php echo BASEURL; ?>funcionarios/">
-                                <i class="fa-solid fa-users"></i> Ver equipe</a></li>
-                        <?php if (esta_logado()): ?>
-                            <li><a class="dropdown-item" href="<?php echo BASEURL; ?>funcionarios/add.php">
-                                    <i class="fa-solid fa-user-plus"></i> Novo funcionário</a></li>
-                        <?php endif; ?>
-                    </ul>
-                </li>
-
-                                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        <i class="fa-solid fa-users"></i> Clientes
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="<?php echo BASEURL; ?>customers/">
-                                <i class="fa-solid fa-users"></i> Gerenciar Clientes</a></li>
-                        <?php if (esta_logado()): ?>
-                            <li><a class="dropdown-item" href="<?php echo BASEURL; ?>customers/add.php">
-                                    <i class="fa-solid fa-user-plus"></i> Novo Cliente</a></li>
-                        <?php endif; ?>
-                    </ul>
-                </li>
-
-                <?php if (eh_admin()): ?>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="fa-solid fa-user-shield"></i> Usuários
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="<?php echo BASEURL; ?>usuarios/">
-                                    <i class="fa-solid fa-users-gear"></i> Gerenciar Usuários</a></li>
-                            <li><a class="dropdown-item" href="<?php echo BASEURL; ?>usuarios/add.php">
-                                    <i class="fa-solid fa-user-plus"></i> Novo Usuário</a></li>
-                        </ul>
-                    </li>
-                <?php endif; ?>
-
-            </ul>
-                
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <?php if (esta_logado()): ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#perfil-modal">
-                                <?php $fotoMini = foto_usuario_url($_SESSION['usuario']['foto'] ?? null); ?>
-                                <?php if ($fotoMini): ?>
-                                    <img src="<?php echo h($fotoMini); ?>" alt="" class="perfil-mini">
-                                <?php else: ?>
-                                    <i class="fa-solid fa-circle-user"></i>
-                                <?php endif; ?>
-                                <?php echo h($_SESSION['usuario']['login']); ?>
-                            </a>
-                        </li>
-                    <?php else: ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?php echo BASEURL; ?>login.php">
-                                <i class="fa-solid fa-right-to-bracket"></i> Entrar
-                            </a>
-                        </li>
+            <div class="collapse navbar-collapse" id="menu-principal">
+                <ul class="nav-topo">
+                    <li><a href="<?php echo BASEURL; ?>index.php"<?php echo $navAtivo('painel'); ?>>
+                            <i class="fa-solid fa-house"></i> Painel</a></li>
+                    <li><a href="<?php echo BASEURL; ?>funcionarios/"<?php echo $navAtivo('funcionarios'); ?>>
+                            <i class="fa-solid fa-id-badge"></i> Funcionários</a></li>
+                    <li><a href="<?php echo BASEURL; ?>customers/"<?php echo $navAtivo('clientes'); ?>>
+                            <i class="fa-solid fa-address-book"></i> Clientes</a></li>
+                    <?php if (eh_admin()): ?>
+                        <li><a href="<?php echo BASEURL; ?>usuarios/"<?php echo $navAtivo('usuarios'); ?>>
+                                <i class="fa-solid fa-user-shield"></i> Usuários</a></li>
                     <?php endif; ?>
                 </ul>
+
+                <div class="topnav-user">
+                    <?php if (esta_logado()): ?>
+                        <?php $fotoMini = foto_usuario_url($_SESSION['usuario']['foto'] ?? null); ?>
+                        <button type="button" class="user-chip" data-bs-toggle="modal" data-bs-target="#perfil-modal">
+                            <?php if ($fotoMini): ?>
+                                <img src="<?php echo h($fotoMini); ?>" alt="">
+                            <?php else: ?>
+                                <span class="avatar-vazio" aria-hidden="true"><i class="fa-solid fa-user"></i></span>
+                            <?php endif; ?>
+                            <span class="info">
+                                <strong><?php echo h($_SESSION['usuario']['login']); ?></strong>
+                                <small><?php echo h($_SESSION['usuario']['perfil']); ?></small>
+                            </span>
+                        </button>
+                    <?php else: ?>
+                        <div class="topnav-guest">
+                            <a class="link-cadastro" href="<?php echo BASEURL; ?>cadastro.php">Criar acesso</a>
+                            <a class="btn btn-secondary" href="<?php echo BASEURL; ?>login.php">
+                                <i class="fa-solid fa-right-to-bracket"></i> Entrar</a>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
     </nav>
@@ -163,4 +146,5 @@
     </div>
 <?php endif; ?>
 
-    <main class="container">
+    <div class="app-main">
+    <main class="page">

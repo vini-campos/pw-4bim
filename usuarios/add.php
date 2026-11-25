@@ -4,12 +4,16 @@ add();
 include HEADER_TEMPLATE;
 ?>
 
-<h2>Novo Usuário</h2>
+<header class="page-heading">
+    <div>
+        <h2>Novo usuário</h2>
+        <p class="page-description">Crie um acesso ao sistema.</p>
+    </div>
+</header>
 
 <?php exibir_mensagem(); ?>
 
-<form action="add.php" method="post" enctype="multipart/form-data">
-    <hr>
+<form action="add.php" method="post" enctype="multipart/form-data" class="record-form">
     <div class="row">
         <div class="form-group col-md-4">
             <label for="login">Usuário</label>
@@ -42,7 +46,7 @@ include HEADER_TEMPLATE;
 
     <div id="actions" class="row mt-3">
         <div class="col-md-12">
-            <button type="submit" class="btn btn-secondary mb-2">
+            <button type="submit" class="btn btn-primary">
                 <i class="fa-solid fa-floppy-disk"></i> Salvar
             </button>
             <a href="index.php" class="btn btn-light">

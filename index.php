@@ -23,53 +23,56 @@ try {
 }
 ?>
 
-<section class="dashboard-welcome">
+<header class="page-heading">
 	<div>
-		<p class="eyebrow">Painel de controle</p>
-		<h1>Gestão de pessoas</h1>
-		<p class="page-description">Organize as informações da sua equipe em um só lugar.</p>
+		<h1><?php echo esta_logado() ? 'Olá, ' . h($_SESSION['usuario']['login']) : 'Olá, visitante'; ?></h1>
+		<p class="page-description">
+			<?php echo esta_logado() ? 'Escolha por onde começar.' : 'Você pode consultar os cadastros. Entre para criar e editar.'; ?>
+		</p>
 	</div>
-	<span class="welcome-icon" aria-hidden="true"><i class="fa-solid fa-people-group"></i></span>
-</section>
+</header>
 
 <?php if (!$erro): ?>
 
-	<div class="dashboard-grid">
+	<div class="painel">
 
-		<?php if (esta_logado()): ?>
-			<a href="<?php echo BASEURL; ?>funcionarios/add.php" class="dashboard-card">
-				<span class="dashboard-card-icon"><i class="fa-solid fa-user-plus"></i></span>
-				<span><strong>Novo funcionário</strong><small>Adicionar alguém à equipe</small></span>
+		<div class="painel-linha">
+			<a href="<?php echo BASEURL; ?>funcionarios/" class="painel-card">
+				<span class="icone"><i class="fa-solid fa-id-badge"></i></span>
+				<span><strong>Funcionários</strong><small>Consultar e gerenciar a equipe</small></span>
 			</a>
-		<?php endif; ?>
+			<?php if (esta_logado()): ?>
+				<a href="<?php echo BASEURL; ?>funcionarios/add.php" class="painel-card novo">
+					<span class="icone"><i class="fa-solid fa-user-plus"></i></span>
+					<span><strong>Novo funcionário</strong><small>Adicionar alguém à equipe</small></span>
+				</a>
+			<?php endif; ?>
+		</div>
 
-		<a href="<?php echo BASEURL; ?>funcionarios/" class="dashboard-card">
-			<span class="dashboard-card-icon"><i class="fa-solid fa-people-group"></i></span>
-			<span><strong>Funcionários</strong><small>Consultar e gerenciar a equipe</small></span>
-		</a>
-
-		<?php if (esta_logado()): ?>
-			<a href="<?php echo BASEURL; ?>customers/add.php" class="dashboard-card">
-				<span class="dashboard-card-icon"><i class="fa-solid fa-user-tag"></i></span>
-				<span><strong>Novo cliente</strong><small>Adicionar um novo cliente</small></span>
+		<div class="painel-linha">
+			<a href="<?php echo BASEURL; ?>customers/" class="painel-card">
+				<span class="icone"><i class="fa-solid fa-address-book"></i></span>
+				<span><strong>Clientes</strong><small>Consultar cadastros de clientes</small></span>
 			</a>
-		<?php endif; ?>
-
-		<a href="<?php echo BASEURL; ?>customers/" class="dashboard-card">
-			<span class="dashboard-card-icon"><i class="fa-solid fa-address-book"></i></span>
-			<span><strong>Clientes</strong><small>Consultar cadastros de clientes</small></span>
-		</a>
+			<?php if (esta_logado()): ?>
+				<a href="<?php echo BASEURL; ?>customers/add.php" class="painel-card novo">
+					<span class="icone"><i class="fa-solid fa-user-tag"></i></span>
+					<span><strong>Novo cliente</strong><small>Adicionar um novo cliente</small></span>
+				</a>
+			<?php endif; ?>
+		</div>
 
 		<?php if (eh_admin()): ?>
-			<a href="<?php echo BASEURL; ?>usuarios/add.php" class="dashboard-card">
-				<span class="dashboard-card-icon"><i class="fa-solid fa-user-shield"></i></span>
-				<span><strong>Novo usuário</strong><small>Criar acesso ao sistema</small></span>
-			</a>
-
-			<a href="<?php echo BASEURL; ?>usuarios/" class="dashboard-card">
-				<span class="dashboard-card-icon"><i class="fa-solid fa-users-gear"></i></span>
-				<span><strong>Usuários</strong><small>Gerenciar acessos ao sistema</small></span>
-			</a>
+			<div class="painel-linha">
+				<a href="<?php echo BASEURL; ?>usuarios/" class="painel-card">
+					<span class="icone"><i class="fa-solid fa-users-gear"></i></span>
+					<span><strong>Usuários</strong><small>Gerenciar acessos ao sistema</small></span>
+				</a>
+				<a href="<?php echo BASEURL; ?>usuarios/add.php" class="painel-card novo">
+					<span class="icone"><i class="fa-solid fa-user-shield"></i></span>
+					<span><strong>Novo usuário</strong><small>Criar acesso ao sistema</small></span>
+				</a>
+			</div>
 		<?php endif; ?>
 
 	</div>

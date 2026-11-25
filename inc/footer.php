@@ -1,15 +1,15 @@
-    <hr>
-    </main> <!-- /container -->
+    </main>
 
-    <footer class="container">
-        <?php $dt = new DateTime("now", new DateTimeZone("America/Sao_Paulo")); ?>
-        <p>&copy;2026 à <?= $dt->format("Y")?> - Vinicius Raphael de caio Henrique</p>
+    <footer class="app-footer">
+        <span><strong>Gerenciador</strong> de pessoas</span>
+        <span>&copy; <?php echo date('Y'); ?> Vinicius Raphael &amp; Caio Henrique</span>
     </footer>
+    </div>
 
     <script src="<?php echo BASEURL; ?>assets/js/jquery-4.0.0.min.js"></script>
     <script src="<?php echo BASEURL; ?>assets/js/bootstrap.bundle.min.js"></script>
     <script src="<?php echo BASEURL; ?>assets/js/all.min.js"></script>
     <script src="<?php echo BASEURL; ?>assets/js/main.js"></script>
-    </body>
+</body>
 
 </html>

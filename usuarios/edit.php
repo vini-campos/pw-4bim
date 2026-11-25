@@ -7,12 +7,16 @@ $ehEu = ((int) $usuario['Id_Usu'] === (int) $_SESSION['usuario']['id']);
 $fotoAtual = foto_usuario_url($usuario['Foto_usu'] ?? null);
 ?>
 
-<h2>Atualizar Usuário</h2>
+<header class="page-heading">
+    <div>
+        <h2>Atualizar usuário</h2>
+        <p class="page-description">Altere os dados do usuário e salve.</p>
+    </div>
+</header>
 
 <?php exibir_mensagem(); ?>
 
-<form action="edit.php?id=<?php echo (int) $usuario['Id_Usu']; ?>" method="post" enctype="multipart/form-data">
-    <hr>
+<form action="edit.php?id=<?php echo (int) $usuario['Id_Usu']; ?>" method="post" enctype="multipart/form-data" class="record-form">
     <div class="row">
         <div class="form-group col-md-5">
             <label for="login">Usuário</label>
@@ -29,9 +33,11 @@ $fotoAtual = foto_usuario_url($usuario['Foto_usu'] ?? null);
 
         <div class="form-group col-md-3">
             <label for="perfil">Perfil</label>
-            <input type="text" class="form-control" id="perfil"
-                value="<?php echo h(nomePerfilUsuario($usuario['Nivel_usu'])); ?>" readonly>
-            <small class="rl-hint">O perfil não pode ser alterado nesta tela.</small>
+            <select class="form-select" id="perfil" name="usuario[Nivel_usu]" <?php echo $ehEu ? 'disabled' : ''; ?>>
+                <option value="0" <?php echo (string) $usuario['Nivel_usu'] === '0' ? 'selected' : ''; ?>>Comum</option>
+                <option value="1" <?php echo (string) $usuario['Nivel_usu'] === '1' ? 'selected' : ''; ?>>Admin</option>
+            </select>
+            <small class="rl-hint"><?php echo $ehEu ? 'Seu próprio perfil não pode ser alterado.' : 'Admin também gerencia usuários.'; ?></small>
         </div>
     </div>
 
@@ -72,7 +78,7 @@ $fotoAtual = foto_usuario_url($usuario['Foto_usu'] ?? null);
 
     <div id="actions" class="row mt-3">
         <div class="col-md-12">
-            <button type="submit" class="btn btn-secondary mb-2">
+            <button type="submit" class="btn btn-primary">
                 <i class="fa-solid fa-floppy-disk"></i> Salvar
             </button>
             <a href="index.php" class="btn btn-light">
