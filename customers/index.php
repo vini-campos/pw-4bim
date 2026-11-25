@@ -51,7 +51,7 @@
                                 <i class="fa fa-pencil"></i> Editar</a>
                             <a href="#" class="btn btn-sm btn-dark mt-2" data-bs-toggle="modal"
                                 data-bs-target="#delete-modal" data-customer="<?php echo (int) $c['Id_Cli']; ?>"
-                                data-rotulo="Cliente">
+                                data-rotulo="Cliente" data-nome="<?php echo h($c['Nome_Cli']); ?>">
                                 <i class="fa fa-trash"></i> Excluir
                             </a>
                         <?php endif; ?>

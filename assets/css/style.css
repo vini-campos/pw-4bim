@@ -2,20 +2,20 @@
 
 :root {
     --rl-white: #ffffff;
-    --rl-off-white: #f4f7f5;
-    --rl-panel: #ffffff;
-    --rl-ink: #1d302d;
-    --rl-ink-soft: #65736f;
-    --rl-border: #e0e9e4;
+    --rl-off-white: #eef4fb;
+    --rl-panel: #fafdff;
+    --rl-ink: #1a2c47;
+    --rl-ink-soft: #657793;
+    --rl-border: #dbe6f2;
 
-    --rl-blue: #327b68;
-    --rl-blue-deep: #183e35;
-    --rl-blue-tint: #e8f3ee;
+    --rl-blue: #3d74bb;
+    --rl-blue-deep: #172a4a;
+    --rl-blue-tint: #eaf2fb;
 
-    --rl-orange: #4d8062;
-    --rl-orange-dark: #37634a;
-    --rl-orange-tint: #eaf4ed;
-    --rl-orange-glow: rgba(83, 145, 105, 0.2);
+    --rl-orange: #5c91d1;
+    --rl-orange-dark: #3c73b1;
+    --rl-orange-tint: #edf5ff;
+    --rl-orange-glow: rgba(79, 137, 204, 0.2);
 
     --rl-radius: 12px;
     --rl-font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -34,7 +34,9 @@ body {
     margin: 0;
     padding-top: 92px;
     padding-bottom: 0;
-    background-color: var(--rl-off-white);
+    background:
+        radial-gradient(circle at 100% 0%, rgba(61, 116, 187, 0.08), transparent 22rem),
+        var(--rl-off-white);
     color: var(--rl-ink-soft);
     font-family: var(--rl-font-body);
     font-size: 15px;
@@ -79,9 +81,9 @@ a:hover {
 /* ---------- Navbar ---------- */
 
 .navbar {
-    background: var(--rl-blue-deep) !important;
-    border-bottom: 3px solid var(--rl-orange);
-    box-shadow: 0 8px 24px rgba(24, 62, 53, 0.12);
+    background: linear-gradient(90deg, #111b2f, #1b365d) !important;
+    border-bottom: 1px solid rgba(192, 213, 241, 0.18);
+    box-shadow: 0 8px 24px rgba(18, 43, 78, 0.18);
     padding-top: 0.65rem;
     padding-bottom: 0.65rem;
 }
@@ -164,7 +166,7 @@ main.container {
     margin: -0.25rem 0 2rem;
     padding: 1.5rem 1.75rem;
     border-radius: var(--rl-radius);
-    background: linear-gradient(115deg, #edf5ef, #f8faf8);
+    background: linear-gradient(115deg, #eaf2fb, #f7fbff);
 }
 
 .dashboard-welcome h1 {
@@ -400,8 +402,8 @@ label {
 }
 
 .form-control {
-    background-color: var(--rl-white);
-    border: 1px solid var(--rl-border);
+    background-color: #f8fbff;
+    border: 2px solid #9bb2cc;
     border-radius: var(--rl-radius);
     color: var(--rl-ink);
     padding: 0.55rem 0.75rem;
@@ -409,9 +411,9 @@ label {
 
 .form-control:focus {
     background-color: var(--rl-white);
-    border-color: var(--rl-orange);
+    border-color: #3d74bb;
     color: var(--rl-ink);
-    box-shadow: 0 0 0 3px var(--rl-orange-glow);
+    box-shadow: 0 0 0 4px rgba(61, 116, 187, 0.18);
 }
 
 .form-control:disabled {
@@ -420,7 +422,8 @@ label {
 }
 
 .form-control::placeholder {
-    color: #9aa4b2;
+    color: #71859f;
+    opacity: 1;
 }
 
 form {
@@ -429,6 +432,12 @@ form {
     border-radius: var(--rl-radius);
     padding: 1.5rem 1.5rem 0.75rem;
     margin-top: 0.5rem;
+}
+
+main form:not(.navbar-search) {
+    width: min(100%, 900px);
+    margin-right: auto;
+    margin-left: auto;
 }
 
 #actions {

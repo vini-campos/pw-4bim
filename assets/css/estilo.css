@@ -1,11 +1,11 @@
 :root {
-    --ink: #17283e;
-    --muted: #6b7b8f;
-    --navy: #10233d;
-    --blue: #2864dc;
-    --line: #e7edf4;
+    --ink: #1a2c47;
+    --muted: #657793;
+    --navy: #172a4a;
+    --blue: #3d74bb;
+    --line: #dbe6f2;
     --surface: #fff;
-    --page: #f4f7fb;
+    --page: #eef4fb;
 }
 
 body {
@@ -13,7 +13,9 @@ body {
     display: flex;
     flex-direction: column;
     color: var(--ink);
-    background: var(--page);
+    background:
+        radial-gradient(circle at 100% 0%, rgba(61, 116, 187, 0.08), transparent 22rem),
+        var(--page);
     font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
 
@@ -109,8 +111,23 @@ main.container { flex: 1; }
 .auth-card { width: min(100%, 480px); padding: clamp(24px, 5vw, 40px); }
 .auth-card h1 { font-size: 1.9rem; font-weight: 750; letter-spacing: -.04em; }
 .auth-back { display: inline-block; margin-top: 24px; color: var(--muted); font-size: .88rem; text-decoration: none; }
-.form-control, .form-select { border-color: #dce4ed; padding-top: .65rem; padding-bottom: .65rem; }
-.form-control:focus, .form-select:focus { border-color: #8caef3; box-shadow: 0 0 0 .2rem #2864dc18; }
+main form:not(.navbar-search) {
+    width: min(100%, 900px);
+    margin-right: auto;
+    margin-left: auto;
+}
+.form-control, .form-select {
+    background: #f8fbff;
+    border: 2px solid #9bb2cc;
+    padding-top: .65rem;
+    padding-bottom: .65rem;
+}
+.form-control::placeholder { color: #71859f; opacity: 1; }
+.form-control:focus, .form-select:focus {
+    background: #fff;
+    border-color: #3d74bb;
+    box-shadow: 0 0 0 .25rem rgba(61, 116, 187, 0.18);
+}
 .btn-primary { --bs-btn-bg: var(--blue); --bs-btn-border-color: var(--blue); --bs-btn-hover-bg: #1d51bc; --bs-btn-hover-border-color: #1d51bc; }
 
 @media (max-width: 575.98px) {

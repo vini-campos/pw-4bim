@@ -6,9 +6,13 @@ $('#delete-modal').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget);
   var id = button.data('customer');
   var rotulo = button.data('rotulo') || 'Item';
+  var nome = (button.data('nome') || '').toString().trim();
 
   var modal = $(this);
-  modal.find('.modal-title').text('Excluir ' + rotulo + ' #' + id);
+  modal.find('.modal-title').text(nome ? 'Excluir ' + rotulo + ': ' + nome : 'Excluir ' + rotulo + ' #' + id);
+  modal.find('.modal-body').text(nome
+    ? 'Deseja realmente excluir ' + nome + '?'
+    : 'Deseja realmente excluir este item?');
   modal.find('#confirm').attr('href', 'delete.php?id=' + id);
 })
 /**

@@ -67,7 +67,7 @@
                         <?php if (!$ehEu): ?>
                             <a href="#" class="btn btn-sm btn-dark mt-2" data-bs-toggle="modal"
                                 data-bs-target="#delete-modal" data-customer="<?php echo (int) $u['Id_Usu']; ?>"
-                                data-rotulo="Usuário">
+                                data-rotulo="Usuário" data-nome="<?php echo h($u['Login_usu']); ?>">
                                 <i class="fa fa-trash"></i> Excluir
                             </a>
                         <?php endif; ?>

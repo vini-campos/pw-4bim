@@ -60,6 +60,7 @@ include HEADER_TEMPLATE;
                                 </a>
                                 <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
                                     data-bs-target="#delete-modal" data-customer="<?php echo (int) $item['Id']; ?>" data-rotulo="Funcionário"
+                                    data-nome="<?php echo h($item['Nome']); ?>"
                                     aria-label="Excluir funcionário">
                                     <i class="fa-solid fa-trash"></i>
                                 </a>

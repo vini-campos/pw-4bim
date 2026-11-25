@@ -1,9 +1,9 @@
 :root {
-    --corporate-navy: #142b45;
-    --corporate-blue: #2f67c8;
-    --corporate-blue-hover: #2456ad;
-    --corporate-border: #dce5ef;
-    --corporate-muted: #8291a3;
+    --corporate-navy: #172a4a;
+    --corporate-blue: #3d74bb;
+    --corporate-blue-hover: #315f9f;
+    --corporate-border: #dbe6f2;
+    --corporate-muted: #657793;
 }
 
 .app-navbar {

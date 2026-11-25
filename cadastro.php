@@ -43,10 +43,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$stmt->bind_param('ss', $loginDigitado, $hash);
 			$stmt->execute();
 
+			$idUsuario = $stmt->insert_id;
+			$stmt->close();
+			$stmt = null;
+
+			session_regenerate_id(true);
+			unset($_SESSION['visitante']);
 			$_SESSION['csrf_cadastro'] = bin2hex(random_bytes(32));
-			$_SESSION['message'] = 'Cadastro realizado. Entre com seu usuário e senha.';
+			$_SESSION['usuario'] = [
+				'id'     => (int) $idUsuario,
+				'login'  => $loginDigitado,
+				'perfil' => 'Comum',
+				'foto'   => null,
+			];
+			$_SESSION['message'] = 'Cadastro realizado. Você já está conectado.';
 			$_SESSION['type'] = 'success';
-			header('Location: ' . BASEURL . 'login.php');
+			header('Location: ' . BASEURL . 'index.php');
 			exit;
 		} catch (mysqli_sql_exception $e) {
 			if ((int) $e->getCode() === 1062) {
