@@ -1,7 +1,7 @@
     </main>
 
     <footer class="app-footer">
-        <span><strong>Gerenciador</strong> de pessoas</span>
+        <span><strong>Gerenciador</strong> de funcionários</span>
         <span>&copy; <?php echo date('Y'); ?> Vinicius Raphael &amp; Caio Henrique</span>
     </footer>
     </div>

@@ -138,7 +138,7 @@ if (!empty($_SESSION['message'])) {
 			</form>
 
 			<div class="auth-links">
-				<a href="cadastro.php">Ainda não tem usuário? Cadastre-se</a>
+				<a href="cadastro.php">Cadastre-se</a>
 				<a href="index.php?visitante=1">Continuar sem login</a>
 			</div>
 		</div>

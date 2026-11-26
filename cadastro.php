@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 		<div class="auth-card">
 			<h1>Criar acesso</h1>
-			<p class="auth-sub">Cadastre seu usuário para acessar o sistema como funcionário.</p>
+			<p class="auth-sub">Cadastre-se para acessar como funcionário.</p>
 
 			<?php if ($erro): ?>
 				<div class="alert alert-danger" role="alert"><?php echo htmlspecialchars($erro, ENT_QUOTES, 'UTF-8'); ?></div>
