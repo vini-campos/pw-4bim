@@ -1,0 +1,154 @@
+<?php
+include 'config.php';
+include DBAPI;
+include_once ABSPATH . 'inc/auth.php';
+
+if (esta_logado()) {
+	header('Location: ' . BASEURL . 'index.php');
+	exit;
+}
+
+if (empty($_SESSION['csrf_cadastro'])) {
+	$_SESSION['csrf_cadastro'] = bin2hex(random_bytes(32));
+}
+
+$erro = null;
+$loginDigitado = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	$loginDigitado = trim($_POST['login'] ?? '');
+	$senha = $_POST['senha'] ?? '';
+	$confirmacao = $_POST['confirmacao'] ?? '';
+	$token = $_POST['csrf'] ?? '';
+
+	if (!hash_equals($_SESSION['csrf_cadastro'], $token)) {
+		$erro = 'Sessão expirada. Atualize a página e tente novamente.';
+	} elseif (!preg_match('/^[A-Za-z0-9._ -]{3,50}$/', $loginDigitado)) {
+		$erro = 'O usuário deve ter de 3 a 50 caracteres: letras, números, espaços, ponto, hífen ou sublinhado.';
+	} elseif (strlen($senha) < 6 || strlen($senha) > 72) {
+		$erro = 'A senha deve ter entre 6 e 72 caracteres.';
+	} elseif ($senha !== $confirmacao) {
+		$erro = 'As senhas informadas não coincidem.';
+	} else {
+		$db = null;
+		$stmt = null;
+
+		try {
+			$db = open_database();
+			$hash = password_hash($senha, PASSWORD_DEFAULT);
+			$stmt = $db->prepare(
+				"INSERT INTO Usuarios (Login_usu, Senha_usu, Nivel_usu, Ativo_usu)
+				VALUES (?, ?, '0', 1)"
+			);
+			$stmt->bind_param('ss', $loginDigitado, $hash);
+			$stmt->execute();
+
+			$idUsuario = $stmt->insert_id;
+			$stmt->close();
+			$stmt = null;
+
+			session_regenerate_id(true);
+			unset($_SESSION['visitante']);
+			$_SESSION['csrf_cadastro'] = bin2hex(random_bytes(32));
+			$_SESSION['usuario'] = [
+				'id'     => (int) $idUsuario,
+				'login'  => $loginDigitado,
+				'perfil' => 'Comum',
+				'foto'   => null,
+			];
+			$_SESSION['message'] = 'Cadastro realizado. Você já está conectado.';
+			$_SESSION['type'] = 'success';
+			header('Location: ' . BASEURL . 'index.php');
+			exit;
+		} catch (mysqli_sql_exception $e) {
+			if ((int) $e->getCode() === 1062) {
+				$erro = 'Esse nome de usuário já está em uso.';
+			} else {
+				error_log($e->getMessage());
+				$erro = 'Não foi possível concluir o cadastro agora. Tente novamente.';
+			}
+		} catch (Exception $e) {
+			error_log($e->getMessage());
+			$erro = 'Não foi possível acessar o sistema agora. Tente novamente.';
+		} finally {
+			if ($stmt instanceof mysqli_stmt) {
+				$stmt->close();
+			}
+			if ($db instanceof mysqli) {
+				$db->close();
+			}
+		}
+	}
+}
+?>
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="utf-8">
+	<title>Criar acesso | Gerenciador</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/all.min.css">
+	<link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/style.css?v=4">
+	<link rel="stylesheet" href="<?php echo BASEURL; ?>assets/css/login.css?v=4">
+</head>
+
+<body class="auth-body">
+	<div class="auth">
+
+		<a class="auth-brand" href="<?php echo BASEURL; ?>index.php">Gerenciador</a>
+
+		<div class="auth-card">
+			<h1>Criar acesso</h1>
+			<p class="auth-sub">Cadastre seu usuário para acessar o sistema como funcionário.</p>
+
+			<?php if ($erro): ?>
+				<div class="alert alert-danger" role="alert"><?php echo htmlspecialchars($erro, ENT_QUOTES, 'UTF-8'); ?></div>
+			<?php endif; ?>
+
+			<form action="cadastro.php" method="post">
+				<input type="hidden" name="csrf" value="<?php echo htmlspecialchars($_SESSION['csrf_cadastro'], ENT_QUOTES, 'UTF-8'); ?>">
+
+				<div class="form-group">
+					<label for="login">Usuário</label>
+					<input type="text" class="form-control" id="login" name="login" minlength="3" maxlength="50"
+						pattern="[A-Za-z0-9._ -]+" autocomplete="username" required autofocus
+						value="<?php echo htmlspecialchars($loginDigitado, ENT_QUOTES, 'UTF-8'); ?>">
+					<small class="form-hint">3 a 50 caracteres: letras, números, espaços, ponto, hífen ou sublinhado.</small>
+				</div>
+
+				<div class="form-group">
+					<label for="senha">Senha</label>
+					<input type="password" class="form-control" id="senha" name="senha" minlength="6" maxlength="72"
+						autocomplete="new-password" required>
+				</div>
+
+				<div class="form-group">
+					<label for="confirmacao">Confirmar senha</label>
+					<input type="password" class="form-control" id="confirmacao" name="confirmacao" minlength="6" maxlength="72"
+						autocomplete="new-password" required>
+				</div>
+
+				<button type="submit" class="btn btn-primary w-100">
+					<i class="fa-solid fa-user-plus"></i> Cadastrar
+				</button>
+			</form>
+
+			<div class="auth-links">
+				<a href="login.php">Já tem acesso? Entrar</a>
+			</div>
+		</div>
+
+		<p class="auth-footer">&copy; <?php echo date('Y'); ?> Vinicius Raphael &amp; Caio Henrique</p>
+
+	</div>
+	<script src="<?php echo BASEURL; ?>assets/js/no-drag.js"></script>
+</body>
+
+</html>

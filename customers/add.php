@@ -1,0 +1,67 @@
+<?php
+include "function.php";
+add();
+include HEADER_TEMPLATE;
+?>
+
+<div class="form-page">
+<header class="page-heading">
+    <div>
+        <h2>Novo cliente</h2>
+        <p class="page-description">Preencha os dados para cadastrar um cliente.</p>
+    </div>
+</header>
+
+<?php exibir_mensagem(); ?>
+
+<form action="add.php" method="post" class="record-form">
+    <div class="row">
+        <div class="form-group col-md-8">
+            <label for="nome">Nome</label>
+            <input type="text" class="form-control" id="nome" name="cliente[Nome_Cli]" maxlength="100" required
+                value="<?php echo h($cliente['Nome_Cli'] ?? ''); ?>">
+        </div>
+
+        <div class="form-group col-md-4">
+            <label for="cpf_cnpj">CPF</label>
+            <input type="text" class="form-control" id="cpf_cnpj" name="cliente[CPF_Cli]" maxlength="14"
+                placeholder="000.000.000-00" required value="<?php echo h($cliente['CPF_Cli'] ?? ''); ?>">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-4">
+            <label for="phone">Telefone</label>
+            <input type="text" class="form-control" id="phone" name="cliente[Tel_Cli]" maxlength="11"
+                placeholder="DDD + número" value="<?php echo h($cliente['Tel_Cli'] ?? ''); ?>">
+        </div>
+
+        <div class="form-group col-md-8">
+            <label for="email">E-mail</label>
+            <input type="email" class="form-control" id="email" name="cliente[Email_Cli]" maxlength="100"
+                value="<?php echo h($cliente['Email_Cli'] ?? ''); ?>">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label for="endereco">Endereço</label>
+            <input type="text" class="form-control" id="endereco" name="cliente[Endereco_Cli]" maxlength="200"
+                value="<?php echo h($cliente['Endereco_Cli'] ?? ''); ?>">
+        </div>
+    </div>
+
+    <div id="actions" class="row mt-3">
+        <div class="col-md-12">
+            <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-floppy-disk"></i> Salvar
+            </button>
+            <a href="index.php" class="btn btn-light">
+                <i class="fa-solid fa-rotate-left"></i> Cancelar
+            </a>
+        </div>
+    </div>
+</form>
+</div>
+
+<?php include FOOTER_TEMPLATE; ?>
